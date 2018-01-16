@@ -1,12 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Header from './components/headerComponent';
+import Body from './components/bodyComponent';
 
 class Root extends React.Component {
     render() {
         return (
-            <div>
-                <h1>React code</h1>
-                <h4>finally it works</h4>
+            <div className="container">
+                <Header />
+                <Body />
             </div>
         )
     }

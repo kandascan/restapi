@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-Task = require('../models/task');
+const Task = require('../models/task');
 
 router.get('/tasks', function(req, res){
     Task.getTasks(function(err, task){

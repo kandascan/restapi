@@ -1,6 +1,6 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
-var taskSchema = mongoose.Schema({
+const taskSchema = mongoose.Schema({
     name: {
         type: String,
         require: true
@@ -11,7 +11,7 @@ var taskSchema = mongoose.Schema({
     }
 });
 
-var Task = module.exports = mongoose.model('Task', taskSchema);
+const Task = module.exports = mongoose.model('Task', taskSchema);
 
 module.exports.getTasks = function(callback, limit){
     Task.find(callback).limit(limit);
@@ -26,14 +26,14 @@ module.exports.addTask = function(task, callback){
 }
 
 module.exports.updateTask = function(id, task, option, callback){
-    var query = {_id: id};
-    var update = {
+    const query = {_id: id};
+    const update = {
         name: task.name
     }
     Task.findOneAndUpdate(query, update, option, callback);
 }
 
 module.exports.deleteTask = function(id, callback){
-    var query = {_id : id};
+    const query = {_id : id};
     Task.remove(query, callback);
 }

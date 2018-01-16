@@ -1,7 +1,0 @@
-{
-    "env" : {
-        "process.env.DB_USER" : "task",
-        "process.env.DB_PASS" : "task",
-        "process.env.DB_NAME" : "task"
-    }
-}

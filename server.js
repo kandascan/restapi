@@ -12,10 +12,10 @@ app.use(bodyParser.json());
 app.use('/api', router);
 app.use(express.static(path.join(__dirname, 'public')));
 
-mongoose.connect('mongodb://task:task@ds251827.mlab.com:51827/task', function(err){
-    if(err){
+mongoose.connect('mongodb://' + process.env.DB_USER + ':' + process.env.DB_PASS + '@ds251827.mlab.com:51827/' + process.env.DB_NAME, function (err) {
+    if (err) {
         console.log("Not connected to the database: " + err);
-    } else{
+    } else {
         console.log("Connected to MongoDB");
     }
 });

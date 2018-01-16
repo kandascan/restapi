@@ -3,9 +3,9 @@ var path = require('path');
 module.exports = {
     entry: path.resolve(__dirname, 'public') + '/app/index.js',
     output: {
-        path: path.resolve(__dirname, 'dist') + '/app',
+        path: path.resolve(__dirname, 'public/dist') + '/app',
         filename: 'bundle.js',
-        publicPath: '/app/'
+        publicPath: '/dist/app/'
     },
     module: {
         loaders: [

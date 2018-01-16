@@ -1,0 +1,7 @@
+{
+    "env" : {
+        "DB_USER" : "task",
+        "DB_PASS" : "task",
+        "DB_NAME" : "task"
+    }
+}

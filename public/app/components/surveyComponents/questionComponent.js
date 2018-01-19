@@ -24,8 +24,14 @@ export default class Question extends React.Component {
 
         return (
             <div>
-                <h4>{this.props.item.id}. {this.props.item.title}</h4>
-                {answers}
+                <div className="alert alert-success" role="alert">
+                    <h5>{this.props.item.id}. {this.props.item.title}</h5>
+                </div>
+                <div className="row">
+                    <div className="col-lg-6">
+                        {answers}
+                    </div>
+                </div>
             </div>
         )
     }

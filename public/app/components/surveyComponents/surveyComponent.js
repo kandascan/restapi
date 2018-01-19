@@ -11,10 +11,10 @@ export default class Survey extends React.Component {
         });
         return (
             <div>
-                <h1>{this.props.survey.header}</h1>
-                <ul>
-                    {questions}
-                </ul>
+                <div className="alert alert-info" role="alert">
+                    <h2>{this.props.survey.header}</h2>
+                </div>
+                {questions}
             </div>
         )
     }

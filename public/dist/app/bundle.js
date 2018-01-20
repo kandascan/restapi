@@ -18645,7 +18645,7 @@ var Body = function (_React$Component) {
 
         _this.state = {
             id: 1,
-            header: 'Ankieta osobowa',
+            header: 'Przykładowa ankieta',
             user: 'Boguslaw Boczkowski',
             public: true,
             questions: [{
@@ -18779,16 +18779,46 @@ var Survey = function (_React$Component) {
     function Survey() {
         _classCallCheck(this, Survey);
 
-        return _possibleConstructorReturn(this, (Survey.__proto__ || Object.getPrototypeOf(Survey)).apply(this, arguments));
+        var _this = _possibleConstructorReturn(this, (Survey.__proto__ || Object.getPrototypeOf(Survey)).call(this));
+
+        _this.state = {};
+        return _this;
     }
 
     _createClass(Survey, [{
+        key: 'componentWillMount',
+        value: function componentWillMount() {
+            var questions = this.props.survey.questions;
+            this.setState({ question: questions[0], index: 0 });
+        }
+    }, {
         key: 'render',
         value: function render() {
+            var _this2 = this;
+
+            // questions = questions.map((item, index) => {
+            //     return (
+            //         <Question item={item} key={item.id} />
+            //     )
+            // });      
             var questions = this.props.survey.questions;
-            questions = questions.map(function (item, index) {
-                return _react2.default.createElement(_questionComponent2.default, { item: item, key: item.id });
-            });
+            var counter = this.state.index;
+            var nextQuestion = function nextQuestion() {
+                counter++;
+                _this2.setState({
+                    question: questions[counter],
+                    index: counter
+                });
+            };
+
+            var previousQuestion = function previousQuestion() {
+                counter--;
+                _this2.setState({
+                    question: questions[counter],
+                    index: counter
+                });
+            };
+
             return _react2.default.createElement(
                 'div',
                 null,
@@ -18801,7 +18831,27 @@ var Survey = function (_React$Component) {
                         this.props.survey.header
                     )
                 ),
-                questions
+                _react2.default.createElement(_questionComponent2.default, { item: this.state.question }),
+                _react2.default.createElement(
+                    'div',
+                    null,
+                    _react2.default.createElement('br', null),
+                    _react2.default.createElement(
+                        'button',
+                        { onClick: previousQuestion, className: 'btn btn-info' },
+                        'Back'
+                    ),
+                    _react2.default.createElement(
+                        'span',
+                        null,
+                        ' '
+                    ),
+                    _react2.default.createElement(
+                        'button',
+                        { onClick: nextQuestion, className: 'btn btn-success' },
+                        'Next'
+                    )
+                )
             );
         }
     }]);

@@ -20,19 +20,24 @@ export default class Survey extends React.Component {
         var questions = this.props.survey.questions;
         var counter = this.state.index;
         var nextQuestion = () => {
-            counter++;
-            this.setState({
-                question: questions[counter],
-                index: counter
-            });
+            if(counter <= questions.length-2)
+            {
+                counter++;
+                this.setState({
+                    question: questions[counter],
+                    index: counter
+                });
+            }           
         }
 
         var previousQuestion = () => {
-            counter--;
-            this.setState({
-                question: questions[counter],
-                index: counter
-            });
+            if(counter> 0){
+                counter--;
+                this.setState({
+                    question: questions[counter],
+                    index: counter
+                });
+            }
         }
 
         return (

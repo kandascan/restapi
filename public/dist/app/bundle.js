@@ -18645,7 +18645,7 @@ var Body = function (_React$Component) {
 
         _this.state = {
             id: 1,
-            header: 'Przykładowa ankieta',
+            header: 'Ankieta osobowa',
             user: 'Boguslaw Boczkowski',
             public: true,
             questions: [{
@@ -18804,19 +18804,23 @@ var Survey = function (_React$Component) {
             var questions = this.props.survey.questions;
             var counter = this.state.index;
             var nextQuestion = function nextQuestion() {
-                counter++;
-                _this2.setState({
-                    question: questions[counter],
-                    index: counter
-                });
+                if (counter <= questions.length - 2) {
+                    counter++;
+                    _this2.setState({
+                        question: questions[counter],
+                        index: counter
+                    });
+                }
             };
 
             var previousQuestion = function previousQuestion() {
-                counter--;
-                _this2.setState({
-                    question: questions[counter],
-                    index: counter
-                });
+                if (counter > 0) {
+                    counter--;
+                    _this2.setState({
+                        question: questions[counter],
+                        index: counter
+                    });
+                }
             };
 
             return _react2.default.createElement(

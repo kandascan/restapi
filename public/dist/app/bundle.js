@@ -19127,18 +19127,9 @@ var DropDownList = function (_React$Component) {
             });
 
             return _react2.default.createElement(
-                'div',
-                { className: 'input-group-btn' },
-                _react2.default.createElement(
-                    'button',
-                    { type: 'button', className: 'btn btn-secondary dropdown-toggle', 'data-toggle': 'dropdown', 'aria-haspopup': 'true', 'aria-expanded': 'false' },
-                    'Select'
-                ),
-                _react2.default.createElement(
-                    'div',
-                    { className: 'dropdown-menu' },
-                    listItem
-                )
+                'select',
+                { className: 'form-control' },
+                listItem
             );
         }
     }]);

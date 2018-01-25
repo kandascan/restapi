@@ -10,14 +10,9 @@ export default class DropDownList extends React.Component {
         })
 
         return (
-            <div className="input-group-btn">
-                <button type="button" className="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Select
-                </button>
-                <div className="dropdown-menu">
-                    {listItem}
-                </div>
-            </div>
+            <select className="form-control">
+                {listItem}
+            </select>
         )
     }
 }

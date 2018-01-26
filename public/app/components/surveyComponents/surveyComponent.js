@@ -8,6 +8,7 @@ export default class Survey extends React.Component {
         this.state ={ };
     }
     componentWillMount(){
+        console.log('call');
         var questions = this.props.survey.questions;
         this.setState({question: questions[0], index: 0})
     }

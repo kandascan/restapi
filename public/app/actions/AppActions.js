@@ -1,8 +1,16 @@
-import AppDispatcher from '../dispatcher/AppDispatcher';
+import dispatcher from '../dispatcher/AppDispatcher';
 import AppConstants from '../constants/AppConstants';
 
-var AppActions = {
-
+export function createSurvey(survey){
+    dispatcher.dispatch({
+        type: "CREATE_SURVEY",
+        survey,
+    });
 }
 
-module.exports = AppActions;
+export function deleteSurvey(id){
+    dispatcher.dispatch({
+        type: "DELETE_SURVEY",
+        id,
+    });
+}

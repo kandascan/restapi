@@ -3,34 +3,37 @@ import Jumbotron from './jumbotronComponent';
 import Content from './contentComponent';
 import SurveyStore from '../stores/AppStore';
 import SurveyList from './surveyComponents/surveyListComponent';
+import Survey from './surveyComponents/surveyComponent';
 
 export default class Body extends React.Component {
     constructor() {
         super();
         this.state = {
-            surveys: SurveyStore.getAll(),
+            survey: SurveyStore.getSurveyById(0)
         };
     }
+    componentWillMount(){
+    }
+    createSurvey(){
+        console.log("click create button ");
+    }
+
+    showDetail(id){
+        console.log('click showDetails ID', id);
+        this.state = {
+            survey: SurveyStore.getSurveyById(id-1)
+        }
+        console.log(this.state.survey)
+        var Sur = <Survey survey={this.state.survey}/>;
+    }
+
     render() {
-        const { surveys } = this.state;
-        const Surveys = surveys.map((item) => {
-            return <SurveyList key={item.id} survey={item} />
-        });
+        var Sur = '';
         return (
-            <div>
-                <table className="table">
-                    <thead className="table-success">
-                        <tr>
-                            <th>#</th>
-                            <th>Header</th>
-                            <th>Questions</th>
-                            <th>Public</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {Surveys}
-                    </tbody>
-                </table>
+            <div>               
+                <SurveyList showDetailFunction={this.showDetail.bind(this)}/>
+                <button className="btn btn-danger" onClick={this.createSurvey.bind(this)}>Create </button>
+                {Sur}
             </div>
         )
     }

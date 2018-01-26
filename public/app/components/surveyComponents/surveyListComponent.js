@@ -1,17 +1,39 @@
 import React from 'react';
+import SurveyStore from '../../stores/AppStore';
+import SurveyAction from '../../actions/AppActions';
+import SurveyRow from './surveyRowComponent';
 import Survey from './surveyComponent';
 
 export default class SurveyList extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            surveys: SurveyStore.getAll(),
+        };
+    }
 
     render() {
-        console.log(this.props.survey);
+        const { surveys } = this.state;
+        const Surveys = surveys.map((item) => {
+            return <SurveyRow key={item.id} survey={item} detail={this.props.showDetailFunction}/>
+        });
         return (
-            <tr>
-                <th scope="row">{this.props.survey.id}</th>
-                <td>{this.props.survey.header}</td>
-                <td>{this.props.survey.questions.length}</td>
-                <td><input type="checkbox" defaultChecked={this.props.survey.public} disabled/></td>
-            </tr>
+            <div>
+                <table className="table">
+                    <thead className="table-success">
+                        <tr>
+                            <th>#</th>
+                            <th>Header</th>
+                            <th>Questions</th>
+                            <th>Public</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {Surveys}
+
+                    </tbody>
+                </table>
+            </div>
         )
     }
 }

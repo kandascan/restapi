@@ -8,16 +8,11 @@ export default class Survey extends React.Component {
         this.state ={ };
     }
     componentWillMount(){
-        console.log('call');
+        console.log('call', this.props);
         var questions = this.props.survey.questions;
         this.setState({question: questions[0], index: 0})
     }
     render() {
-        // questions = questions.map((item, index) => {
-        //     return (
-        //         <Question item={item} key={item.id} />
-        //     )
-        // });      
         var questions = this.props.survey.questions;
         var counter = this.state.index;
         var nextQuestion = () => {
@@ -46,7 +41,6 @@ export default class Survey extends React.Component {
                 <div className="alert alert-info" role="alert">
                     <h2>{this.props.survey.header}</h2>
                 </div>
-                {/* {questions} */}
                 <Question item={this.state.question} />
                 <div>
                     <br />

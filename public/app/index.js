@@ -1,17 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Header from './components/headerComponent';
-import Body from './components/bodyComponent';
-import Footer from './components/footerComponent';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import Layout from './components/layoutComponent';
+import Survey from './components/surveyComponents/surveyComponent';
 
 class Root extends React.Component {
     render() {
         return (
-            <div>
-                <Header />
-                <Body />
-                <Footer />
-            </div>
+            <BrowserRouter>
+                <Switch>
+                    <Route path='/' component={Layout} />
+                    <Route path='/survey' component={Survey} />
+                </Switch>
+            </BrowserRouter>
         )
     }
 }

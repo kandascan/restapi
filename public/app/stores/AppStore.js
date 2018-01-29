@@ -196,13 +196,21 @@ class SurveyStore extends EventEmitter {
     }
 
     getSurveyById(id) {
-        return this.surveys[id];
+        //zmienic zeby pobieralo po rzeczywistym id
+        return this.surveys[id-1];
     }
 
     handleActions(action) {
         switch (action.type) {
             case "CREATE_SURVEY": {
                 this.createSurvey(action.text);
+            }
+            case "GET_SURVEYS": {
+                this.getAll();
+            }
+            case "GET_SURVEY_BY_ID": {
+                this.getSurveyById(action.id);
+                this.emit('change');
             }
         }
     }

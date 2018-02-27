@@ -1,12 +1,134 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <link href="https://use.fontawesome.com/releases/v5.0.7/css/all.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
     <title>REST API</title>
 </head>
+
 <body>
-    <h2>Hello from public folder for any frontend framework</h2>
+    <div class="container">
+        <h3>Knockout framework on the frontend site</h3>
+        <div id="person">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>First name</th>
+                        <th>Last name</th>
+                        <th>Age</th>
+                        <th>City</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="input-group">
+                                <input id="txtFirstName" type="text" class="form-control" placeholder="First name">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-group">
+                                <input id="txtLastName" type="text" class="form-control" placeholder="Last name">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-group">
+                                <input id="txtAge" type="text" class="form-control" placeholder="Age">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-group">
+                                <input id="txtCity" type="text" class="form-control" placeholder="City">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-group">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-primary" data-bind="event: { click: addPerson }">
+                                        <i class="fas fa-user-plus"></i>  Add Person
+                                    </button>
+                                </span>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody data-bind="foreach: persons">
+                    <tr>
+                        <td data-bind="text: firstName"></td>
+                        <td data-bind="text: lastName"></td>
+                        <td data-bind="text: age"></td>
+                        <td data-bind="text: city"></td>
+                        <td>
+                            <div class="btn-group" role="group" aria-label="...">
+                                <button class="btn btn-success">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                                <button class="btn btn-warning">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <button class="btn btn-danger" data-bind="click: $parent.removePerson">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="knockout-3.4.2.js"></script>
+    <script type="text/javascript">
+        var vm = {
+            persons: ko.observableArray([
+                {
+                    firstName: ko.observable('Bob'),
+                    lastName: ko.observable('Shmit'),
+                    age: ko.observable(33),
+                    city: ko.observable('New Yors')
+                },
+                {
+                    firstName: ko.observable('Tom'),
+                    lastName: ko.observable('Johns'),
+                    age: ko.observable(33),
+                    city: ko.observable('New Yersey')
+                },
+                {
+                    firstName: ko.observable('Mary'),
+                    lastName: ko.observable('Jahne'),
+                    age: ko.observable(33),
+                    city: ko.observable('New Orlean')
+                }
+            ])
+        }
+
+        vm.addPerson = function () {
+            vm.persons.push({
+                firstName: ko.observable(document.getElementById('txtFirstName').value),
+                lastName: ko.observable(document.getElementById('txtLastName').value),
+                age: ko.observable(document.getElementById('txtAge').value),
+                city: ko.observable(document.getElementById('txtCity').value)
+            });
+        }
+
+        vm.removePerson = function (person) {
+            console.log(person.firstName());
+        }
+
+        ko.applyBindings(vm, document.getElementById('person'));
+    </script>
 </body>
+
 </html>

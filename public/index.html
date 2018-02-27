@@ -58,7 +58,7 @@
                             <div class="input-group">
                                 <span class="input-group-btn">
                                     <button class="btn btn-primary" data-bind="event: { click: addPerson }">
-                                        <i class="fas fa-user-plus"></i>  Add Person
+                                        <i class="fas fa-user-plus"></i> Add Person
                                     </button>
                                 </span>
                             </div>
@@ -73,10 +73,10 @@
                         <td data-bind="text: city"></td>
                         <td>
                             <div class="btn-group" role="group" aria-label="...">
-                                <button class="btn btn-success">
+                                <button class="btn btn-success" data-bind="click: $parent.increesAge">
                                     <i class="fas fa-plus"></i>
                                 </button>
-                                <button class="btn btn-warning">
+                                <button class="btn btn-warning" data-bind="click: $parent.decreesAge">
                                     <i class="fas fa-minus"></i>
                                 </button>
                                 <button class="btn btn-danger" data-bind="click: $parent.removePerson">
@@ -124,7 +124,16 @@
         }
 
         vm.removePerson = function (person) {
-            console.log(person.firstName());
+            var index = vm.persons().indexOf(person);
+            vm.persons.splice(index, 1);
+        }
+
+        vm.increesAge = function (person) {
+            person.age(person.age() + 1);
+        }
+
+        vm.decreesAge = function (person) {
+            person.age(person.age() - 1);
         }
 
         ko.applyBindings(vm, document.getElementById('person'));

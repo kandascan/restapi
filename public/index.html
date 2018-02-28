@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
         crossorigin="anonymous">
     <link href="https://use.fontawesome.com/releases/v5.0.7/css/all.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
         crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
@@ -19,9 +19,12 @@
 </head>
 
 <body>
-    <div class="container">
+    <div id="person" class="container">
         <h3>Knockout framework on the frontend site</h3>
-        <div id="person">
+        <h4 data-bind="text: persons().length"></h4>
+        <div id="validator" class="alert alert-warning" data-bind="text: validateMsg" style="display: none;" role="alert">
+        </div>
+        <div>
             <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -36,7 +39,7 @@
                     <tr>
                         <td>
                             <div class="input-group">
-                                <input id="txtFirstName" type="text" class="form-control" placeholder="First name">
+                                <input id="txtFirstName" type="text" class="form-control" placeholder="First name" onkeyup="hideValidator()">
                             </div>
                         </td>
                         <td>
@@ -92,6 +95,7 @@
     <script src="js/knockout-3.4.2.js"></script>
     <script type="text/javascript">
         var vm = {
+            validateMsg: ko.observable(),
             persons: ko.observableArray([
                 {
                     firstName: ko.observable('Bob'),
@@ -115,12 +119,20 @@
         }
 
         vm.addPerson = function () {
-            vm.persons.push({
-                firstName: ko.observable(document.getElementById('txtFirstName').value),
-                lastName: ko.observable(document.getElementById('txtLastName').value),
-                age: ko.observable(document.getElementById('txtAge').value),
-                city: ko.observable(document.getElementById('txtCity').value)
-            });
+            var firstName = document.getElementById('txtFirstName').value;
+            if (firstName == '' || firstName == null) {
+                vm.validateMsg('first name is required');
+                $('#validator').show();
+            } else {
+                vm.persons.push({
+                    firstName: ko.observable(firstName),
+                    lastName: ko.observable(document.getElementById('txtLastName').value),
+                    age: ko.observable(document.getElementById('txtAge').value),
+                    city: ko.observable(document.getElementById('txtCity').value)
+                });
+                document.getElementById('txtFirstName').value = '';
+            }
+
         }
 
         vm.removePerson = function (person) {
@@ -137,6 +149,10 @@
         }
 
         ko.applyBindings(vm, document.getElementById('person'));
+
+        var hideValidator = function () {
+            $('#validator').fadeOut("slow");
+        }
     </script>
 </body>
 

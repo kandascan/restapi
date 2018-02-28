@@ -21,8 +21,9 @@
 <body>
     <div id="person" class="container">
         <h3>Knockout framework on the frontend site</h3>
-        <h4 data-bind="text: persons().length"></h4>
-        <div id="validator" class="alert alert-warning" data-bind="text: validateMsg" style="display: none;" role="alert">
+        <div id="validator" data-bind="foreach: validates">
+            <div class="alert alert-warning" data-bind="text: $data">
+            </div>
         </div>
         <div>
             <table class="table table-bordered">
@@ -44,17 +45,17 @@
                         </td>
                         <td>
                             <div class="input-group">
-                                <input id="txtLastName" type="text" class="form-control" placeholder="Last name">
+                                <input id="txtLastName" type="text" class="form-control" placeholder="Last name" onkeyup="hideValidator()">
                             </div>
                         </td>
                         <td>
                             <div class="input-group">
-                                <input id="txtAge" type="text" class="form-control" placeholder="Age">
+                                <input id="txtAge" type="text" class="form-control" placeholder="Age" onkeyup="hideValidator()">
                             </div>
                         </td>
                         <td>
                             <div class="input-group">
-                                <input id="txtCity" type="text" class="form-control" placeholder="City">
+                                <input id="txtCity" type="text" class="form-control" placeholder="City" onkeyup="hideValidator()">
                             </div>
                         </td>
                         <td>
@@ -95,13 +96,13 @@
     <script src="js/knockout-3.4.2.js"></script>
     <script type="text/javascript">
         var vm = {
-            validateMsg: ko.observable(),
+            validates: ko.observableArray([]),
             persons: ko.observableArray([
                 {
                     firstName: ko.observable('Bob'),
                     lastName: ko.observable('Shmit'),
                     age: ko.observable(33),
-                    city: ko.observable('New Yors')
+                    city: ko.observable('New York')
                 },
                 {
                     firstName: ko.observable('Tom'),
@@ -119,20 +120,51 @@
         }
 
         vm.addPerson = function () {
+            vm.validates([]);
             var firstName = document.getElementById('txtFirstName').value;
+            var lastName = document.getElementById('txtLastName').value;
+            var age = document.getElementById('txtAge').value;
+            var city = document.getElementById('txtCity').value;
+            var validFields = [];
             if (firstName == '' || firstName == null) {
-                vm.validateMsg('first name is required');
-                $('#validator').show();
-            } else {
+                vm.validates.push('First name is required');
+            }
+            else {
+                validFields.push(true);
+            }
+            if (lastName == '' || lastName == null) {
+                vm.validates.push('Last name is required');
+            }
+            else {
+                validFields.push(true);
+            }
+            if (age == '' || age == null) {
+                vm.validates.push('Age field is required');
+            }
+            else {
+                validFields.push(true);
+            }
+            if (city == '' || city == null) {
+                vm.validates.push('City field is required');
+            }
+            else {
+                validFields.push(true);
+            }
+            if (validFields.length > 3) {
                 vm.persons.push({
                     firstName: ko.observable(firstName),
-                    lastName: ko.observable(document.getElementById('txtLastName').value),
-                    age: ko.observable(document.getElementById('txtAge').value),
-                    city: ko.observable(document.getElementById('txtCity').value)
+                    lastName: ko.observable(lastName),
+                    age: ko.observable(age),
+                    city: ko.observable(city)
                 });
                 document.getElementById('txtFirstName').value = '';
+                document.getElementById('txtLastName').value = '';
+                document.getElementById('txtAge').value = '';
+                document.getElementById('txtCity').value = '';
             }
-
+            else{
+                $('#validator').show();
+            }
         }
 
         vm.removePerson = function (person) {
@@ -155,5 +187,4 @@
         }
     </script>
 </body>
-
 </html>

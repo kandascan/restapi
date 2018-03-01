@@ -21,6 +21,7 @@
 <body>
     <div id="person" class="container">
         <h3>Knockout framework on the frontend site</h3>
+        <h3 data-bind="text: persons.length"></h3>
         <div id="validator" data-bind="foreach: validates">
             <div class="alert alert-warning" data-bind="text: $data">
             </div>
@@ -94,29 +95,15 @@
         </div>
     </div>
     <script src="js/knockout-3.4.2.js"></script>
+    <script src="js/knockout.mapping-latest.js"></script>
     <script type="text/javascript">
+        window.onload = function(){
+            getData();
+        };
+
         var vm = {
             validates: ko.observableArray([]),
-            persons: ko.observableArray([
-                {
-                    firstName: ko.observable('Bob'),
-                    lastName: ko.observable('Shmit'),
-                    age: ko.observable(33),
-                    city: ko.observable('New York')
-                },
-                {
-                    firstName: ko.observable('Tom'),
-                    lastName: ko.observable('Johns'),
-                    age: ko.observable(33),
-                    city: ko.observable('New Yersey')
-                },
-                {
-                    firstName: ko.observable('Mary'),
-                    lastName: ko.observable('Jahne'),
-                    age: ko.observable(33),
-                    city: ko.observable('New Orlean')
-                }
-            ])
+            persons: ko.observableArray([])
         }
 
         vm.addPerson = function () {
@@ -151,16 +138,15 @@
                 validFields.push(true);
             }
             if (validFields.length > 3) {
-                vm.persons.push({
-                    firstName: ko.observable(firstName),
-                    lastName: ko.observable(lastName),
-                    age: ko.observable(age),
-                    city: ko.observable(city)
-                });
-                document.getElementById('txtFirstName').value = '';
-                document.getElementById('txtLastName').value = '';
-                document.getElementById('txtAge').value = '';
-                document.getElementById('txtCity').value = '';
+                var newPerson = {
+                    firstName: firstName,
+                    lastName: lastName,
+                    age: age,
+                    city: city
+                };
+                insertData(newPerson);
+                clearFormFields();
+                getData();
             }
             else{
                 $('#validator').show();
@@ -170,6 +156,7 @@
         vm.removePerson = function (person) {
             var index = vm.persons().indexOf(person);
             vm.persons.splice(index, 1);
+            removeData(person._id);
         }
 
         vm.increesAge = function (person) {
@@ -184,6 +171,46 @@
 
         var hideValidator = function () {
             $('#validator').fadeOut("slow");
+        }
+
+        function getData(){
+            $.ajax({
+                url: 'http://localhost:3000/api/persons/',
+                type: 'GET',
+                dataType: 'JSON',
+                success: function(data){
+                    var persons = ko.mapping.fromJSON(data);
+                    vm.persons(data);
+                }
+            });
+        }
+
+        function insertData(data){
+            $.ajax({
+                url: 'http://localhost:3000/api/persons/',
+                type: 'POST',
+                dataType: 'JSON',
+                data: JSON.stringify(data),
+                contentType: "application/json",
+                success: function(data){
+                }
+            });
+        }
+
+        function removeData(id){
+            $.ajax({
+                url: 'http://localhost:3000/api/persons/'+id,
+                type: 'DELETE',
+                success: function(data){
+                }
+            });
+        }
+
+        function clearFormFields(){            
+            document.getElementById('txtFirstName').value = '';
+                document.getElementById('txtLastName').value = '';
+                document.getElementById('txtAge').value = '';
+                document.getElementById('txtCity').value = '';
         }
     </script>
 </body>

@@ -21,7 +21,7 @@
 <body>
     <div id="person" class="container">
         <h3>Knockout framework on the frontend site</h3>
-        <h3 data-bind="text: persons.length"></h3>
+        <h3 data-bind="text: persons().length"></h3>
         <div id="validator" data-bind="foreach: validates">
             <div class="alert alert-warning" data-bind="text: $data">
             </div>
@@ -40,7 +40,7 @@
                 <tbody>
                     <tr>
                         <td>
-                            <div class="input-group">
+                            <div class="input-group error">
                                 <input id="txtFirstName" type="text" class="form-control" placeholder="First name" onkeyup="hideValidator()">
                             </div>
                         </td>
@@ -78,13 +78,13 @@
                         <td data-bind="text: city"></td>
                         <td>
                             <div class="btn-group" role="group" aria-label="...">
-                                <button class="btn btn-success" data-bind="click: $parent.increesAge">
+                                <button id="btnPlus" class="btn btn-success" data-bind="click: $parent.increesAge">
                                     <i class="fas fa-plus"></i>
                                 </button>
-                                <button class="btn btn-warning" data-bind="click: $parent.decreesAge">
+                                <button id="btnMinus" class="btn btn-warning" data-bind="click: $parent.decreesAge">
                                     <i class="fas fa-minus"></i>
                                 </button>
-                                <button class="btn btn-danger" data-bind="click: $parent.removePerson">
+                                <button id="btnTrash" class="btn btn-danger" data-bind="click: $parent.removePerson">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </div>
@@ -97,7 +97,7 @@
     <script src="js/knockout-3.4.2.js"></script>
     <script src="js/knockout.mapping-latest.js"></script>
     <script type="text/javascript">
-        window.onload = function(){
+        window.onload = function () {
             getData();
         };
 
@@ -146,25 +146,24 @@
                 };
                 insertData(newPerson);
                 clearFormFields();
-                getData();
             }
-            else{
+            else {
                 $('#validator').show();
             }
         }
 
         vm.removePerson = function (person) {
-            var index = vm.persons().indexOf(person);
-            vm.persons.splice(index, 1);
             removeData(person._id);
         }
 
         vm.increesAge = function (person) {
-            person.age(person.age() + 1);
+            person.age += 1;
+            updateData(person);
         }
 
         vm.decreesAge = function (person) {
-            person.age(person.age() - 1);
+            person.age -= 1;
+            updateData(person);
         }
 
         ko.applyBindings(vm, document.getElementById('person'));
@@ -173,45 +172,61 @@
             $('#validator').fadeOut("slow");
         }
 
-        function getData(){
+        function getData() {
             $.ajax({
                 url: 'http://localhost:3000/api/persons/',
                 type: 'GET',
                 dataType: 'JSON',
-                success: function(data){
+                success: function (data) {
                     var persons = ko.mapping.fromJSON(data);
                     vm.persons(data);
                 }
             });
         }
 
-        function insertData(data){
+        function insertData(data) {
             $.ajax({
                 url: 'http://localhost:3000/api/persons/',
                 type: 'POST',
                 dataType: 'JSON',
                 data: JSON.stringify(data),
                 contentType: "application/json",
-                success: function(data){
+                success: function (data) {
+                    getData();
                 }
             });
         }
 
-        function removeData(id){
+        function updateData(data) {
             $.ajax({
-                url: 'http://localhost:3000/api/persons/'+id,
-                type: 'DELETE',
-                success: function(data){
+                url: 'http://localhost:3000/api/persons/' + data._id,
+                type: 'PUT',
+                dataType: 'JSON',
+                data: JSON.stringify(data),
+                contentType: "application/json",
+                success: function (data) {
+                    getData();
                 }
             });
         }
 
-        function clearFormFields(){            
+        function removeData(id) {
+            $.ajax({
+                url: 'http://localhost:3000/api/persons/' + id,
+                type: 'DELETE',
+                success: function (data) {
+                    getData();
+                }
+            });
+        }
+
+        function clearFormFields() {
             document.getElementById('txtFirstName').value = '';
-                document.getElementById('txtLastName').value = '';
-                document.getElementById('txtAge').value = '';
-                document.getElementById('txtCity').value = '';
+            document.getElementById('txtLastName').value = '';
+            document.getElementById('txtAge').value = '';
+            document.getElementById('txtCity').value = '';
         }
     </script>
 </body>
+
 </html>

@@ -24,7 +24,10 @@
 <body>
     <div id="person" class="container">
         <h3>Knockout framework on the frontend site</h3>
-        <h2>Persons on the Grid <span data-bind="text: persons().length" class="badge badge-secondary"></span></h2>
+        <h2>Persons on the Grid
+            <span data-bind="text: persons().length" class="badge badge-secondary"></span>
+        </h2>
+        <h2 data-bind="text: validates.length"></h2>
         <div id="validator" data-bind="foreach: validates">
             <div class="alert alert-warning" data-bind="text: $data">
             </div>

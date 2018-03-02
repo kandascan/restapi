@@ -85,8 +85,15 @@ vm.addPerson = function () {
             age: age,
             city: city
         };
-        insertData(newPerson);
-        clearFormFields();
+        var reg = /^\d+$/;
+        if (reg.test(age)) {
+            console.log('mach');
+            insertData(newPerson);
+            clearFormFields();
+        } else {
+            vm.validates.push('Age can only be a numbers');
+            $('#validator').show();
+        }
     }
     else {
         $('#validator').show();

@@ -1,4 +1,4 @@
-const API_URL = 'http://korest.herokuapp.com/api/persons/';
+const API_URL = 'https://korest.herokuapp.com/api/persons/';
 
 $(function () {
     $(".sortable").sortable({

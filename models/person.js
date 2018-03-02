@@ -16,7 +16,7 @@ const personSchema = mongoose.Schema({
     city: {
         type: String,
         require: true
-    },
+    }
 });
 
 const Person = module.exports = mongoose.model('Person', personSchema);

@@ -96,15 +96,15 @@
                 </tbody>
             </table>
         </div>
-
-        <ul class="connectedSortable sortable">
+        <h2 data-bind="text: todo"></h2>
+        <ul id="firstUl" class="connectedSortable sortable">
             <li class="ui-state-default">Item 1</li>
             <li class="ui-state-default">Item 2</li>
             <li class="ui-state-default">Item 3</li>
             <li class="ui-state-default">Item 4</li>
             <li class="ui-state-default">Item 5</li>
         </ul>
-
+        <h2>huj</h2>
         <ul class="connectedSortable sortable">
             <li class="ui-state-highlight">Item 1</li>
             <li class="ui-state-highlight">Item 2</li>
@@ -127,25 +127,37 @@
     <script type="text/javascript">
         $(function () {
             $(".sortable").sortable({
-                connectWith: ".connectedSortable"
-            }).disableSelection();
-           
-  
+                connectWith: ".connectedSortable",
+                // update: function () {
+                //     console.log('update');
+                // }
+                stop: function( ) {
+                    var order = $("#sortable").sortable("serialize", {key:'order[]'});
+                    //$( "p" ).html( order );
+                    var listItems = $("#firstUl li");
+                    vm.todo(listItems.length);
+                    console.log(listItems.length);
 
+                    //listItems.each(function(li) {
+                        //console.log($(this).text());
+                    //});
+                   // console.log(order);
+                }
+            }).disableSelection();
         });
 
-
-            $('.sortable').on('DOMSubtreeModified', function(event) {
-                console.log(event);
-                console.log('sort');
-            });
+        // $('.sortable').on('DOMSubtreeModified', function(event) {
+        //     console.log(event);
+        //     console.log('sort');
+        // });
         window.onload = function () {
             getData();
         };
 
         var vm = {
             validates: ko.observableArray([]),
-            persons: ko.observableArray([])
+            persons: ko.observableArray([]),
+            todo: ko.observable()
         }
 
         vm.addPerson = function () {

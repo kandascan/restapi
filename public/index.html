@@ -24,7 +24,7 @@
 <body>
     <div id="person" class="container">
         <h3>Knockout framework on the frontend site</h3>
-        <h3 data-bind="text: persons().length"></h3>
+        <h2>Persons on the Grid <span data-bind="text: persons().length" class="badge badge-secondary"></span></h2>
         <div id="validator" data-bind="foreach: validates">
             <div class="alert alert-warning" data-bind="text: $data">
             </div>
@@ -96,31 +96,45 @@
                 </tbody>
             </table>
         </div>
-        <h2 data-bind="text: todo"></h2>
-        <ul id="firstUl" class="connectedSortable sortable">
-            <li class="ui-state-default">Item 1</li>
-            <li class="ui-state-default">Item 2</li>
-            <li class="ui-state-default">Item 3</li>
-            <li class="ui-state-default">Item 4</li>
-            <li class="ui-state-default">Item 5</li>
-        </ul>
-        <h2>huj</h2>
-        <ul class="connectedSortable sortable">
-            <li class="ui-state-highlight">Item 1</li>
-            <li class="ui-state-highlight">Item 2</li>
-            <li class="ui-state-highlight">Item 3</li>
-            <li class="ui-state-highlight">Item 4</li>
-            <li class="ui-state-highlight">Item 5</li>
-        </ul>
+        <div class="row">
+            <div class="col-md-4">
+                <h5>
+                    <span data-bind="text: todoHeader" class="badge badge-primary"></span>
+                </h5>
 
-        <ul class="connectedSortable sortable">
-            <li class="ui-state-highlight">Item 1</li>
-            <li class="ui-state-highlight">Item 2</li>
-            <li class="ui-state-default">Item 3</li>
-            <li class="ui-state-default">Item 4</li>
-            <li class="ui-state-default">Item 5</li>
-        </ul>
-
+                <ul id="todo" class="connectedSortable sortable">
+                    <li class="ui-state-default">Item 1</li>
+                    <li class="ui-state-default">Item 2</li>
+                    <li class="ui-state-default">Item 3</li>
+                    <li class="ui-state-default">Item 4</li>
+                    <li class="ui-state-default">Item 5</li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h5>
+                    <span data-bind="text: inProgressHeader" class="badge badge-secondary"></span>
+                </h5>
+                <ul id="inProgress" class="connectedSortable sortable">
+                    <li class="ui-state-highlight">Item 6</li>
+                    <li class="ui-state-highlight">Item 7</li>
+                    <li class="ui-state-highlight">Item 8</li>
+                    <li class="ui-state-highlight">Item 9</li>
+                    <li class="ui-state-highlight">Item 10</li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h5>
+                    <span data-bind="text: completedHeader" class="badge badge-success"></span>
+                </h5>
+                <ul id="completed" class="connectedSortable sortable">
+                    <li class="ui-state-highlight">Item 11</li>
+                    <li class="ui-state-highlight">Item 12</li>
+                    <li class="ui-state-default">Item 13</li>
+                    <li class="ui-state-default">Item 14</li>
+                    <li class="ui-state-default">Item 15</li>
+                </ul>
+            </div>
+        </div>
     </div>
     <script src="js/knockout-3.4.2.js"></script>
     <script src="js/knockout.mapping-latest.js"></script>

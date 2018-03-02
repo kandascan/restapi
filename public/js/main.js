@@ -1,30 +1,51 @@
 const API_URL = 'https://korest.herokuapp.com/api/persons/';
 
+window.onload = function () {
+    getData();
+    showColumnHeaders()
+};
+
+function showColumnHeaders() {
+    var todoColumn = $("#todo li");
+    vm.todo(todoColumn.length);
+
+    var inProgressColumn = $("#inProgress li");
+    vm.inProgress(inProgressColumn.length);
+
+    var completedColumn = $("#completed li");
+    vm.completed(completedColumn.length);
+}
+
 $(function () {
     $(".sortable").sortable({
         connectWith: ".connectedSortable",
-        stop: function( ) {
-            var order = $("#sortable").sortable("serialize", {key:'order[]'});
-            var listItems = $("#firstUl li");
-            vm.todo(listItems.length);
-            console.log(listItems.length);
+        stop: function () {
+            console.clear();
+            showColumnHeaders();
+            var listItems = $(".sortable li");
+            listItems.each(function (li) {
+                console.log($(this).parent()[0].id + " " + $(this).text());
+            });
         }
     }).disableSelection();
 });
 
-// $('.sortable').on('DOMSubtreeModified', function(event) {
-//     console.log(event);
-//     console.log('sort');
-// });
-window.onload = function () {
-    getData();
-};
-
 var vm = {
     validates: ko.observableArray([]),
     persons: ko.observableArray([]),
-    todo: ko.observable()
+    todo: ko.observable(),
+    inProgress: ko.observable(),
+    completed: ko.observable()
 }
+vm.todoHeader = ko.computed(function () {
+    return 'ToDo: ' + vm.todo();
+})
+vm.inProgressHeader = ko.computed(function () {
+    return 'In Progress: ' + vm.inProgress();
+})
+vm.completedHeader = ko.computed(function () {
+    return 'Completed: ' + vm.completed();
+})
 
 vm.addPerson = function () {
     vm.validates([]);

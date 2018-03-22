@@ -1,4 +1,5 @@
 const express = require('express');
+const socket = require('socket.io');
 const path = require('path');
 const app = express();
 const bodyParser = require('body-parser');
@@ -24,6 +25,18 @@ mongoose.connect(config.database, function (err) {
     }
 });
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
     console.log('Server running on port: ' + port);
+});
+
+// Socket setup
+const io = socket(server);
+
+io.on('connection', socket => {
+    console.log('made socket connection: ', socket.id);
+    socket.on('test', data => {
+        console.log('Socket on test on server :')
+        console.log(data);
+        io.sockets.emit('test', data);
+    });
 });

@@ -1,35 +1,5 @@
 const API_URL = 'https://korest.herokuapp.com/api/persons/';
 
-window.onload = function () {
-    getData();
-    showColumnHeaders()
-};
-
-function showColumnHeaders() {
-    var todoColumn = $("#todo li");
-    vm.todo(todoColumn.length);
-
-    var inProgressColumn = $("#inProgress li");
-    vm.inProgress(inProgressColumn.length);
-
-    var completedColumn = $("#completed li");
-    vm.completed(completedColumn.length);
-}
-
-$(function () {
-    $(".sortable").sortable({
-        connectWith: ".connectedSortable",
-        stop: function () {
-            console.clear();
-            showColumnHeaders();
-            var listItems = $(".sortable li");
-            listItems.each(function (li) {
-                console.log($(this).parent()[0].id + " " + $(this).text());
-            });
-        }
-    }).disableSelection();
-});
-
 var vm = {
     validates: ko.observableArray([]),
     persons: ko.observableArray([]),

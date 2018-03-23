@@ -52,9 +52,7 @@ window.onload = function () {
 };
 
 function populateLists(listItems) {
-    console.log(listItems);
     for (var i = 0; i < listItems.length; i++) {
-        console.log(listItems[i].id );
         var newList = '<div class="col-md-4"><ul id="' + listItems[i].id + '" class="connectedSortable sortable">';
         for(var j = 0; j < listItems[i].items.length; j++){
             newList += '<li class="ui-state-default">' + listItems[i].items[j].name + '</li>';
@@ -76,38 +74,58 @@ function showColumnHeaders() {
 }
 //Socket listen
 socket.on('test', data => {
-    console.log('Socket on from test frontend');
-    console.log(data);
-    populateLists(data);
-});
-var sortedList = [];
-var parentName = '';
-var lis = [];
-$(function () {
-    populateLists(arrayList);
+    console.log('socket fron');
+    var myNode = document.getElementById("myLists");
+    while (myNode.firstChild) {
+        myNode.removeChild(myNode.firstChild);
+    }
+    populateLists(data.lista);
+    InitSortable();
 
-    console.log('sortable');
+});
+function InitSortable() {
+
     $(".sortable").sortable({
         connectWith: ".connectedSortable",
         stop: function () {
-            sortedList = [];
-            console.clear();
-            showColumnHeaders();
-            var listItems = $(".sortable li");
-            listItems.each(function (li) {
-                console.log($(this).parent()[0].id + " " + $(this).text());
-                parentName = $(this).parent()[0].id;   
-                lis.push($(this).text());              
-                var newListObj = {
-                    id: parentName,
-                    items: lis
-                }
-                sortedList.push(newListObj);
-            });
-            
-            console.log(sortedList);
-            //Socket Emit
-            socket.emit('test', { sortedList })
+            CreateNewList();
+        }
+    }).disableSelection();
+};
+
+$(function () {
+    populateLists(arrayList);
+
+    $(".sortable").sortable({
+        connectWith: ".connectedSortable",
+        stop: function () {
+            CreateNewList();
         }
     }).disableSelection();
 });
+
+function CreateNewList(){
+    var sortedList = [];
+    var newName = ''
+    showColumnHeaders();
+    var listItems = $(".sortable li");
+    listItems.each(function (li) {
+        if(newName != $(this).parent()[0].id){  
+            var newParent = {};          
+            newName = $(this).parent()[0].id;
+            newParent.id = newName;
+            newParent.items = [];
+            sortedList.push(newParent);
+        }
+        if(sortedList.length > 0){
+            var index = sortedList.findIndex(x => x.id == $(this).parent()[0].id);
+            var newItem = {
+                name: $(this).text()
+            };
+            sortedList[index].items.push(newItem);            
+        }
+    });
+
+    //Socket Emit
+    socket.emit('test', { lista:sortedList })
+}

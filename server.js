@@ -37,6 +37,7 @@ io.on('connection', socket => {
     socket.on('test', data => {
         console.log('Socket on test on server :')
         console.log(data);
+        data.iterator +=1;
         io.sockets.emit('test', data);
     });
 });

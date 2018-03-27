@@ -33,11 +33,27 @@ const server = app.listen(port, () => {
 const io = socket(server);
 
 io.on('connection', socket => {
-    console.log('made socket connection: ', socket.id);
+    console.log("Socket Id: " + socket.id + " connected");
     socket.on('test', data => {
         console.log('Socket on test on server :')
         console.log(data);
-        data.iterator +=1;
+        data.iterator += 1;
         io.sockets.emit('test', data);
+    });
+
+    socket.on('chat message', data => {
+        console.log('Socket on chat message on server :')
+        console.log(data);
+        io.sockets.emit('chat message', "text from server");
+    });
+
+    socket.on('new message', data => {
+        console.log('Socket Id: ' + socket.id + ' send message:')
+        console.log(data);
+        io.sockets.emit('new message', { message: data });
+    });
+
+    socket.on('disconnect', () => {
+        console.log("Socket Id: " + socket.id + " disconnected");
     });
 });

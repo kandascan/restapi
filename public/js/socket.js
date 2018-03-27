@@ -83,6 +83,12 @@ socket.on('test', data => {
     InitSortable();
 
 });
+
+socket.on('new message', data => {
+    console.log(data);
+
+});
+
 function InitSortable() {
 
     $(".sortable").sortable({

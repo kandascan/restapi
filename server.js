@@ -56,4 +56,11 @@ io.on('connection', socket => {
     socket.on('disconnect', () => {
         console.log("Socket Id: " + socket.id + " disconnected");
     });
+
+    socket.on('tempSensor', data =>{
+        process.stdout.write('\033c'); // clear console
+        console.log('Socket Id: ' + socket.id + ' send message:')
+        console.log(data);
+        io.sockets.emit('tempSensorUI', data);
+    });
 });

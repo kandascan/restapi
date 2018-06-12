@@ -24,11 +24,29 @@
 
 <body>
     <div id="person" class="container">
-        <h3>Knockout framework on the frontend site</h3>
+        <div class="row">
+            <div class="col-md-8">
+                <br />
+                <h3>Knockout framework on the frontend site</h3>
+                <h4>Socket.io listening ESP8266 and read data from DHT22 sensor.</h4>
+            </div>
+            <div class="col-md-4">
+                <br />
+                <h6>Humidity:
+                    <small id="currentHumid">Loading...</small>
+                </h6>
+                <h6>Temperature:
+                    <small id="currentTemp">Loading...</small>
+                </h6>
+                <h6>Heat Index:
+                    <small id="currentheatIndex">Loading...</small>
+                </h6>
+            </div>
+        </div>
+        <hr />
         <h2>Persons on the Grid
-            <span data-bind="text: persons().length" class="badge badge-secondary"></span>
-        </h2>
-        <h2 data-bind="text: validates.length"></h2>
+                <span data-bind="text: persons().length" class="badge badge-secondary"></span>
+            </h2>
         <div id="validator" data-bind="foreach: validates">
             <div class="alert alert-warning" data-bind="text: $data">
             </div>
@@ -140,7 +158,6 @@
             </div> -->
         </div>
     </div>
-    <button id='btnSock'>Socket</button>
     <script src="js/knockout-3.4.2.js"></script>
     <script src="js/knockout.mapping-latest.js"></script>
     <script src="js/main.js"></script>

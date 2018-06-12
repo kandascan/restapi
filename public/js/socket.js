@@ -1,4 +1,5 @@
 const HOST_URL = 'https://korest.herokuapp.com/';
+//const HOST_URL = 'http://localhost:3000';
 var socket = io.connect(HOST_URL);
 
 var arrayList = [
@@ -84,6 +85,7 @@ socket.on('test', data => {
 
 });
 
+
 socket.on('new message', data => {
     console.log(data);
 
@@ -134,4 +136,17 @@ function CreateNewList(){
 
     //Socket Emit
     socket.emit('test', { lista:sortedList })
+
+
+    
 }
+
+socket.on('tempSensorUI', data => {
+    //console.log(data);
+    $("#currentTemp").text();
+    $("#currentTemp").text(data.Temperature);
+    $("#currentHumid").text();
+    $("#currentHumid").text(data.Humidity);
+    $("#currentheatIndex").text();
+    $("#currentheatIndex").text(data["Heat index"]);
+});

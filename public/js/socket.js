@@ -149,4 +149,70 @@ socket.on('tempSensorUI', data => {
     $("#currentHumid").text(data.Humidity);
     $("#currentheatIndex").text();
     $("#currentheatIndex").text(data["Heat index"]);
+    var currentdate = new Date(); 
+    var datetime = currentdate.getHours() + ":"  
+                + currentdate.getMinutes() + ":" 
+                + currentdate.getSeconds();
+                //console.log(datetime);
+                updateChart(datetime, data.Temperature.substr(0, 5));
+                //addData(datetime, data.Temperature.substr(0, 5));
+                removeData();
+});
+
+var canvas = document.getElementById('myChart');
+var data = {
+    labels: [],
+    datasets: [
+        {
+            label: "Temperature in my room",
+            fill: false,
+            lineTension: 0.1,
+            backgroundColor: "rgba(75,192,192,0.4)",
+            borderColor: "rgba(75,192,192,1)",
+            borderCapStyle: 'butt',
+            borderDash: [],
+            borderDashOffset: 0.0,
+            borderJoinStyle: 'miter',
+            pointBorderColor: "rgba(75,192,192,1)",
+            pointBackgroundColor: "#fff",
+            pointBorderWidth: 1,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: "rgba(75,192,192,1)",
+            pointHoverBorderColor: "rgba(220,220,220,1)",
+            pointHoverBorderWidth: 2,
+            pointRadius: 5,
+            pointHitRadius: 10,
+            data: [],
+        }
+    ]
+};
+
+function addData(label, data) {
+    myLineChart.data.labels.push(label);
+    myLineChart.data.datasets.push(parseFloat(data));
+    myLineChart.update();
+}
+
+
+function removeData() {
+    if(myLineChart.data.datasets[0].data.length > 11){
+        myLineChart.data.labels.shift();
+        myLineChart.data.datasets[0].data.shift();
+        myLineChart.update();
+    }    
+}
+
+function updateChart(time, temp){
+    var index = myLineChart.data.datasets[0].data.length;
+    myLineChart.data.datasets[0].data[index] = parseFloat(temp);
+    myLineChart.data.labels[index] = time;
+    myLineChart.update();
+}
+
+var option = {
+	showLines: true
+};
+var myLineChart = Chart.Line(canvas,{
+	data:data,
+  options:option
 });

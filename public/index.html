@@ -19,6 +19,7 @@
         crossorigin="anonymous"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
     <title>REST API</title>
 </head>
 
@@ -44,9 +45,11 @@
             </div>
         </div>
         <hr />
+        <canvas id="myChart" width="1000" height="250"></canvas>
+        <hr />
         <h2>Persons on the Grid
-                <span data-bind="text: persons().length" class="badge badge-secondary"></span>
-            </h2>
+            <span data-bind="text: persons().length" class="badge badge-secondary"></span>
+        </h2>
         <div id="validator" data-bind="foreach: validates">
             <div class="alert alert-warning" data-bind="text: $data">
             </div>
@@ -162,6 +165,7 @@
     <script src="js/knockout.mapping-latest.js"></script>
     <script src="js/main.js"></script>
     <script src="js/socket.js"></script>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 </body>
 
 </html>

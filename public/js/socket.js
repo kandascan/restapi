@@ -151,7 +151,7 @@ socket.on('tempSensorUI', data => {
     $("#currentheatIndex").text(data["Heat index"]);
     var currentdate = new Date(); 
     var datetime = currentdate.toString().substr(16, 8);
-    updateChart(datetime, data.Temperature.substr(0, 5));
+    updateChart(datetime, data.Temperature.substr(0, 5), data.Humidity.substr(0, 5), data["Heat index"].substr(9, 5));
     removeData();
 });
 
@@ -160,7 +160,7 @@ var data = {
     labels: [],
     datasets: [
         {
-            label: "Temperature in my room",
+            label: "Temperature",
             fill: false,
             lineTension: 0.1,
             backgroundColor: "rgba(75,192,192,0.4)",
@@ -170,11 +170,53 @@ var data = {
             borderDashOffset: 0.0,
             borderJoinStyle: 'miter',
             pointBorderColor: "rgba(75,192,192,1)",
-            pointBackgroundColor: "#fff",
+            pointBackgroundColor: "rgba(75,192,192,0.4)",
             pointBorderWidth: 1,
             pointHoverRadius: 5,
             pointHoverBackgroundColor: "rgba(75,192,192,1)",
             pointHoverBorderColor: "rgba(220,220,220,1)",
+            pointHoverBorderWidth: 2,
+            pointRadius: 5,
+            pointHitRadius: 10,
+            data: [],
+        },
+        {
+            label: "Humidity",
+            fill: false,
+            lineTension: 0.1,
+            backgroundColor: "rgba(186, 255, 188)",
+            borderColor: "rgba(25, 160, 45)",
+            borderCapStyle: 'butt',
+            borderDash: [],
+            borderDashOffset: 0.0,
+            borderJoinStyle: 'miter',
+            pointBorderColor: "rgba(0, 140, 40)",
+            pointBackgroundColor: "rgba(150, 255, 180)",
+            pointBorderWidth: 1,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: "rgba(4, 206, 61)",
+            pointHoverBorderColor: "rgba(0, 140, 40)",
+            pointHoverBorderWidth: 2,
+            pointRadius: 5,
+            pointHitRadius: 10,
+            data: [],
+        },
+        {
+            label: "Heat index",
+            fill: false,
+            lineTension: 0.1,
+            backgroundColor: "rgba(255, 212, 191)",
+            borderColor: "rgba(255, 133, 73)",
+            borderCapStyle: 'butt',
+            borderDash: [],
+            borderDashOffset: 0.0,
+            borderJoinStyle: 'miter',
+            pointBorderColor: "rgba(255, 79, 79)",
+            pointBackgroundColor: "rgba(255, 191, 191)",
+            pointBorderWidth: 1,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: "rgba(255, 132, 132)",
+            pointHoverBorderColor: "rgba(255, 79, 79)",
             pointHoverBorderWidth: 2,
             pointRadius: 5,
             pointHitRadius: 10,
@@ -194,13 +236,17 @@ function removeData() {
     if(myLineChart.data.datasets[0].data.length > 11){
         myLineChart.data.labels.shift();
         myLineChart.data.datasets[0].data.shift();
+        myLineChart.data.datasets[1].data.shift();
+        myLineChart.data.datasets[2].data.shift();
         myLineChart.update();
     }    
 }
 
-function updateChart(time, temp){
+function updateChart(time, temp, hum, heatIndex){
     var index = myLineChart.data.datasets[0].data.length;
     myLineChart.data.datasets[0].data[index] = parseFloat(temp);
+    myLineChart.data.datasets[1].data[index] = parseFloat(hum);
+    myLineChart.data.datasets[2].data[index] = parseFloat(heatIndex);
     myLineChart.data.labels[index] = time;
     myLineChart.update();
 }

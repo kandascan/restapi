@@ -150,13 +150,9 @@ socket.on('tempSensorUI', data => {
     $("#currentheatIndex").text();
     $("#currentheatIndex").text(data["Heat index"]);
     var currentdate = new Date(); 
-    var datetime = currentdate.getHours() + ":"  
-                + currentdate.getMinutes() + ":" 
-                + currentdate.getSeconds();
-                //console.log(datetime);
-                updateChart(datetime, data.Temperature.substr(0, 5));
-                //addData(datetime, data.Temperature.substr(0, 5));
-                removeData();
+    var datetime = currentdate.toString().substr(16, 8);
+    updateChart(datetime, data.Temperature.substr(0, 5));
+    removeData();
 });
 
 var canvas = document.getElementById('myChart');

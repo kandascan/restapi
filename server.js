@@ -58,9 +58,24 @@ io.on('connection', socket => {
     });
 
     socket.on('tempSensor', data =>{
-        process.stdout.write('\033c'); // clear console
-        console.log('Socket Id: ' + socket.id + ' send message:')
+        console.log("tempSensor");
+        //process.stdout.write('\033c'); // clear console
+        //console.log('Socket Id: ' + socket.id + ' send message:')
         console.log(data);
         io.sockets.emit('tempSensorUI', data);
+    });
+
+    socket.on('tempSensorServer', data =>{
+        console.log("tempSensorServer");
+        console.log(data);
+        io.sockets.emit('tempSensor', data);
+    });
+
+    socket.on('led', data =>{
+        console.log("led");
+        //process.stdout.write('\033c'); // clear console
+        //console.log('Socket Id: ' + socket.id + ' send message:')
+        console.log(data);
+        io.sockets.emit('led', data);
     });
 });

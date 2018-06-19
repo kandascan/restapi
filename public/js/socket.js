@@ -75,7 +75,6 @@ function showColumnHeaders() {
 }
 //Socket listen
 socket.on('test', data => {
-    console.log('socket fron');
     var myNode = document.getElementById("myLists");
     while (myNode.firstChild) {
         myNode.removeChild(myNode.firstChild);
@@ -87,7 +86,6 @@ socket.on('test', data => {
 
 
 socket.on('new message', data => {
-    console.log(data);
 
 });
 
@@ -135,20 +133,28 @@ function CreateNewList(){
     });
 
     //Socket Emit
-    socket.emit('test', { lista:sortedList })
-
-
-    
+    socket.emit('test', { lista:sortedList })    
 }
 
 socket.on('tempSensorUI', data => {
-    //console.log(data);
     $("#currentTemp").text();
     $("#currentTemp").text(data.Temperature);
     $("#currentHumid").text();
     $("#currentHumid").text(data.Humidity);
     $("#currentheatIndex").text();
     $("#currentheatIndex").text(data["Heat index"]);
+    if(data.Led == true){
+        $("#iconLed").removeClass();
+        $("#iconLed").addClass("far fa-lightbulb fa-2x");
+    }
+    else if(data.Led == false){
+        $("#iconLed").removeClass();
+        $("#iconLed").addClass("fas fa-lightbulb fa-2x");
+    }
+    else{
+        $("#iconLed").removeClass();
+        $("#iconLed").addClass("fas fa-spinner fa-2x");
+    }
     var currentdate = new Date(); 
     var datetime = currentdate.toString().substr(16, 8);
     updateChart(datetime, data.Temperature.substr(0, 5), data.Humidity.substr(0, 5), data["Heat index"].substr(9, 5));
@@ -258,3 +264,26 @@ var myLineChart = Chart.Line(canvas,{
 	data:data,
   options:option
 });
+
+function buttonclick(e) {
+    var data = {
+        Ledi: e.value
+    };
+    socket.emit('tempSensorServer', data);
+  }
+
+  socket.on('led', data => {
+      if(data.Ledii == true){
+        $("#iconLed").removeClass();
+        $("#iconLed").addClass("far fa-lightbulb fa-2x");
+    }
+    else if(data.Ledii == false){
+        $("#iconLed").removeClass();
+        $("#iconLed").addClass("fas fa-lightbulb fa-2x");
+    }
+    else{
+        $("#iconLed").removeClass();
+        $("#iconLed").addClass("fas fa-spinner fa-2x");
+    }
+
+  })

@@ -55,7 +55,7 @@ window.onload = function () {
 function populateLists(listItems) {
     for (var i = 0; i < listItems.length; i++) {
         var newList = '<div class="col-md-4"><ul id="' + listItems[i].id + '" class="connectedSortable sortable">';
-        for(var j = 0; j < listItems[i].items.length; j++){
+        for (var j = 0; j < listItems[i].items.length; j++) {
             newList += '<li class="ui-state-default">' + listItems[i].items[j].name + '</li>';
         }
         newList += '</ul></div>';
@@ -110,56 +110,29 @@ $(function () {
     }).disableSelection();
 });
 
-function CreateNewList(){
+function CreateNewList() {
     var sortedList = [];
     var newName = ''
     showColumnHeaders();
     var listItems = $(".sortable li");
     listItems.each(function (li) {
-        if(newName != $(this).parent()[0].id){  
-            var newParent = {};          
+        if (newName != $(this).parent()[0].id) {
+            var newParent = {};
             newName = $(this).parent()[0].id;
             newParent.id = newName;
             newParent.items = [];
             sortedList.push(newParent);
         }
-        if(sortedList.length > 0){
+        if (sortedList.length > 0) {
             var index = sortedList.findIndex(x => x.id == $(this).parent()[0].id);
             var newItem = {
                 name: $(this).text()
             };
-            sortedList[index].items.push(newItem);            
+            sortedList[index].items.push(newItem);
         }
     });
-
-    //Socket Emit
-    socket.emit('test', { lista:sortedList })    
+    socket.emit('test', { lista: sortedList })
 }
-
-socket.on('tempSensorUI', data => {
-    $("#currentTemp").text();
-    $("#currentTemp").text(data.Temperature);
-    $("#currentHumid").text();
-    $("#currentHumid").text(data.Humidity);
-    $("#currentheatIndex").text();
-    $("#currentheatIndex").text(data["Heat index"]);
-    if(data.Led == true){
-        $("#iconLed").removeClass();
-        $("#iconLed").addClass("far fa-lightbulb fa-2x");
-    }
-    else if(data.Led == false){
-        $("#iconLed").removeClass();
-        $("#iconLed").addClass("fas fa-lightbulb fa-2x");
-    }
-    else{
-        $("#iconLed").removeClass();
-        $("#iconLed").addClass("fas fa-spinner fa-2x");
-    }
-    var currentdate = new Date(); 
-    var datetime = currentdate.toString().substr(16, 8);
-    updateChart(datetime, data.Temperature.substr(0, 5), data.Humidity.substr(0, 5), data["Heat index"].substr(9, 5));
-    removeData();
-});
 
 var canvas = document.getElementById('myChart');
 var data = {
@@ -239,16 +212,16 @@ function addData(label, data) {
 
 
 function removeData() {
-    if(myLineChart.data.datasets[0].data.length > 11){
+    if (myLineChart.data.datasets[0].data.length > 11) {
         myLineChart.data.labels.shift();
         myLineChart.data.datasets[0].data.shift();
         myLineChart.data.datasets[1].data.shift();
         myLineChart.data.datasets[2].data.shift();
         myLineChart.update();
-    }    
+    }
 }
 
-function updateChart(time, temp, hum, heatIndex){
+function updateChart(time, temp, hum, heatIndex) {
     var index = myLineChart.data.datasets[0].data.length;
     myLineChart.data.datasets[0].data[index] = parseFloat(temp);
     myLineChart.data.datasets[1].data[index] = parseFloat(hum);
@@ -258,11 +231,11 @@ function updateChart(time, temp, hum, heatIndex){
 }
 
 var option = {
-	showLines: true
+    showLines: true
 };
-var myLineChart = Chart.Line(canvas,{
-	data:data,
-  options:option
+var myLineChart = Chart.Line(canvas, {
+    data: data,
+    options: option
 });
 
 function buttonclick(e) {
@@ -270,20 +243,51 @@ function buttonclick(e) {
         Ledi: e.value
     };
     socket.emit('tempSensorServer', data);
-  }
+}
 
-  socket.on('led', data => {
-      if(data.Ledii == true){
+socket.on('led', data => {
+    SetButtonAndIcon(data.Ledii);
+})
+
+function SetButtonAndIcon(val) {
+    if (val == true) {
         $("#iconLed").removeClass();
         $("#iconLed").addClass("far fa-lightbulb fa-2x");
+        $("#ledBtn").removeClass();
+        $("#ledBtn").addClass("btn btn-info");
+        $("#ledBtn").html('OFF');
+        $("#ledBtn").prop('value', false);
+        $("#ledBtn").attr("disabled", false);
     }
-    else if(data.Ledii == false){
+    else if (val == false) {
         $("#iconLed").removeClass();
         $("#iconLed").addClass("fas fa-lightbulb fa-2x");
+        $("#ledBtn").removeClass();
+        $("#ledBtn").addClass("btn btn-success");
+        $("#ledBtn").html('ON');
+        $("#ledBtn").prop('value', true);
+        $("#ledBtn").attr("disabled", false);
     }
-    else{
+    else {
         $("#iconLed").removeClass();
         $("#iconLed").addClass("fas fa-spinner fa-2x");
+        $("#ledBtn").removeClass();
+        $("#ledBtn").addClass("btn btn-warning");
+        $("#ledBtn").html('Wait');
+        $("#ledBtn").attr("disabled", true);
     }
+}
 
-  })
+socket.on('tempSensorUI', data => {
+    $("#currentTemp").text();
+    $("#currentTemp").text(data.Temperature);
+    $("#currentHumid").text();
+    $("#currentHumid").text(data.Humidity);
+    $("#currentheatIndex").text();
+    $("#currentheatIndex").text(data["Heat index"]);
+    SetButtonAndIcon(data.Led);
+    var currentdate = new Date();
+    var datetime = currentdate.toString().substr(16, 8);
+    updateChart(datetime, data.Temperature.substr(0, 5), data.Humidity.substr(0, 5), data["Heat index"].substr(9, 5));
+    removeData();
+});

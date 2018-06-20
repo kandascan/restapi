@@ -65,20 +65,20 @@ io.on('connection', socket => {
         console.log(data);
         io.sockets.emit('tempSensorUI', data);
         // ##################### here create measure object from data
-        var measure = {
-            "humidity": 12.12,
-            "temperatureCelsius": 25.30,
-            "temperatureFahrenheit": 77.70,
-            "heatIndexCelsius": 25.50,
-            "heatIndexFahrenheit": 75.50
-        };
-        //console.log(measure);
-        Measure.addMeasure(measure, function(err, measure){
-            if(err){
-                throw err;
-            }
-            res.json(measure);
-        });
+        // var measure = {
+        //     "humidity": 12.12,
+        //     "temperatureCelsius": 25.30,
+        //     "temperatureFahrenheit": 77.70,
+        //     "heatIndexCelsius": 25.50,
+        //     "heatIndexFahrenheit": 75.50
+        // };
+        // //console.log(measure);
+        // Measure.addMeasure(measure, function(err, measure){
+        //     if(err){
+        //         throw err;
+        //     }
+        //     res.json(measure);
+        // });
     });
 
     socket.on('tempSensorServer', data =>{

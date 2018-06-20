@@ -1,5 +1,6 @@
 const HOST_URL = 'https://korest.herokuapp.com/';
 //const HOST_URL = 'http://localhost:3000';
+const API_URL_MEASURE = 'https://korest.herokuapp.com/api/measure/';
 var socket = io.connect(HOST_URL);
 
 var arrayList = [
@@ -290,4 +291,26 @@ socket.on('tempSensorUI', data => {
     var datetime = currentdate.toString().substr(16, 8);
     updateChart(datetime, data.Temperature.substr(0, 5), data.Humidity.substr(0, 5), data["Heat index"].substr(9, 5));
     removeData();
+    //insertSensorData(data);
 });
+
+function insertSensorData(data) {
+   
+            var measure = {
+            "humidity": data.Humidity.substr(0, 5),
+            "temperatureCelsius": data.Temperature.substr(0, 5),
+            "temperatureFahrenheit": data.Temperature.substr(9, 5),
+            "heatIndexCelsius": data["Heat index"].substr(0, 5),
+            "heatIndexFahrenheit": data["Heat index"].substr(9, 5)
+        };
+    $.ajax({
+        url: API_URL_MEASURE,
+        type: 'POST',
+        dataType: 'JSON',
+        data: JSON.stringify(measure),
+        contentType: "application/json",
+        success: function (data) {
+            console.log(data);
+        }
+    });
+}

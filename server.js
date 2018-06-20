@@ -66,7 +66,23 @@ io.on('connection', socket => {
         console.log(data);
         io.sockets.emit('tempSensorUI', data);
         // ##################### here create measure object from data
-        insertSensorData(data);
+        var measure = {
+            "humidity": data.Humidity.substr(0, 5),
+            "temperatureCelsius": data.Temperature.substr(0, 5),
+            "temperatureFahrenheit": data.Temperature.substr(9, 5),
+            "heatIndexCelsius": data["Heat index"].substr(0, 5),
+            "heatIndexFahrenheit": data["Heat index"].substr(9, 5)
+            };
+            $.ajax({
+                url: API_URL_MEASURE,
+                type: 'POST',
+                dataType: 'JSON',
+                data: JSON.stringify(measure),
+                contentType: "application/json",
+                success: function (data) {
+                    console.log(data);
+                }
+            });
         // var measure = {
         //     "humidity": 12.12,
         //     "temperatureCelsius": 25.30,

@@ -9,6 +9,7 @@ const morgan = require('morgan');
 const port = process.env.PORT || 3000;
 const router = require('./routes/router');
 const config = require('./config/database');
+const Measure = require('./models/measure');
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -63,6 +64,15 @@ io.on('connection', socket => {
         //console.log('Socket Id: ' + socket.id + ' send message:')
         console.log(data);
         io.sockets.emit('tempSensorUI', data);
+        // ##################### here create measure object from data
+        // var measure = data;
+        // console.log(measure);
+        // Measure.addMeasure(measure, function(err, measure){
+        //     if(err){
+        //         throw err;
+        //     }
+        //     res.json(measure);
+        // });
     });
 
     socket.on('tempSensorServer', data =>{

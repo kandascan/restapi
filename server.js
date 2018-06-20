@@ -11,6 +11,7 @@ const router = require('./routes/router');
 const config = require('./config/database');
 const Measure = require('./models/measure');
 const API_URL_MEASURE = 'https://korest.herokuapp.com/api/measure/';
+const request = require('request');
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -59,7 +60,7 @@ io.on('connection', socket => {
         console.log("Socket Id: " + socket.id + " disconnected");
     });
 
-    socket.on('tempSensor', data =>{
+    socket.on('tempSensor', data => {
         console.log("tempSensor");
         //process.stdout.write('\033c'); // clear console
         //console.log('Socket Id: ' + socket.id + ' send message:')
@@ -72,22 +73,29 @@ io.on('connection', socket => {
             "temperatureFahrenheit": data.Temperature.substr(9, 5),
             "heatIndexCelsius": data["Heat index"].substr(0, 5),
             "heatIndexFahrenheit": data["Heat index"].substr(9, 5)
-            };
-        Measure.addMeasure(measure, function(err, measure){
-            if(err){
-                throw err;
+        };
+        var options = {
+            url: API_URL_MEASURE,
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            json: measure
+        };
+        request(options, function (err, res, body) {
+            if (res && (res.statusCode === 200 || res.statusCode === 201)) {
+                console.log(body);
             }
-            res.json(measure);
         });
     });
 
-    socket.on('tempSensorServer', data =>{
+    socket.on('tempSensorServer', data => {
         console.log("tempSensorServer");
         console.log(data);
         io.sockets.emit('tempSensor', data);
     });
 
-    socket.on('led', data =>{
+    socket.on('led', data => {
         console.log("led");
         //process.stdout.write('\033c'); // clear console
         //console.log('Socket Id: ' + socket.id + ' send message:')

@@ -2,6 +2,20 @@ const express = require('express');
 const router = express.Router();
 const Task = require('../models/task');
 const Person = require('../models/person');
+const Measure = require('../models/measure');
+
+router.post('/measure', function(req, res){
+    var measure = req.body;
+    console.log(measure);
+    Measure.addMeasure(measure, function(err, measure){
+        if(err){
+            throw err;
+        }
+        res.json(measure);
+    });
+});
+
+///////////////////////////////////////////////////////////
 
 router.get('/persons', function(req, res){
     Person.getPersons(function(err, person){

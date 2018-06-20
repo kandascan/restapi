@@ -9,7 +9,6 @@ const morgan = require('morgan');
 const port = process.env.PORT || 3000;
 const router = require('./routes/router');
 const config = require('./config/database');
-const Measure = require('./models/measure');
 const API_URL_MEASURE = 'https://korest.herokuapp.com/api/measure/';
 const request = require('request');
 
@@ -72,7 +71,8 @@ io.on('connection', socket => {
             "temperatureCelsius": data.Temperature.substr(0, 5),
             "temperatureFahrenheit": data.Temperature.substr(9, 5),
             "heatIndexCelsius": data["Heat index"].substr(0, 5),
-            "heatIndexFahrenheit": data["Heat index"].substr(9, 5)
+            "heatIndexFahrenheit": data["Heat index"].substr(9, 5),
+            "led": data.Led
         };
         var options = {
             url: API_URL_MEASURE,
@@ -102,5 +102,4 @@ io.on('connection', socket => {
         console.log(data);
         io.sockets.emit('led', data);
     });
-
 });

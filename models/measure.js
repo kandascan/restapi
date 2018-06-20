@@ -21,6 +21,10 @@ const measureSchema = mongoose.Schema({
         type: Number,
         require: true
     }, 
+    led: {
+        type: Boolean,
+        require: true
+    },
     measureDate: {
         type: Date,
         default: Date.now
@@ -49,6 +53,7 @@ module.exports.updateMeasure = function(id, measure, option, callback){
         temperatureFahrenheit: measure.temperatureFahrenheit,
         heatIndexCelsius: measure.heatIndexCelsius,
         heatIndexFahrenheit: measure.heatIndexFahrenheit,
+        led: measure.led,
         measureDate: measure.measureDate
     }
     Measure.findOneAndUpdate(query, update, option, callback);

@@ -11,9 +11,9 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
         crossorigin="anonymous">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
-
-
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+        crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css" />
     <link rel="stylesheet" href="css/style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -25,6 +25,8 @@
     <script defer src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.js"></script>
     <title>REST API</title>
 </head>
 
@@ -32,12 +34,15 @@
     <div id="person" class="container">
         <nav>
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
-              <a class="nav-item nav-link active" id="nav-sensors-tab" data-toggle="tab" href="#nav-sensors" role="tab" aria-controls="nav-sensors" aria-selected="true">Sensors</a>
-              <a class="nav-item nav-link" id="nav-knockout-tab" data-toggle="tab" href="#nav-knockout" role="tab" aria-controls="nav-knockout" aria-selected="false">KnockOut</a>
-              <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">$(Sortable)</a>
+                <a class="nav-item nav-link active" id="nav-sensors-tab" data-toggle="tab" href="#nav-sensors" role="tab" aria-controls="nav-sensors"
+                    aria-selected="true">Sensors</a>
+                <a class="nav-item nav-link" id="nav-knockout-tab" data-toggle="tab" href="#nav-knockout" role="tab" aria-controls="nav-knockout"
+                    aria-selected="false">KnockOut</a>
+                <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact"
+                    aria-selected="false">$(Sortable)</a>
             </div>
-          </nav>
-          <div class="tab-content" id="nav-tabContent">
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
             <div class="tab-pane fade show active" id="nav-sensors" role="tabpanel" aria-labelledby="nav-sensors-tab">
                 <div class="row">
                     <div class="col-md-6">
@@ -59,13 +64,39 @@
                     <div class="col-md-2">
                         <br />
                         <h6>Turn on/off LED</h6>
-                            <i id="iconLed" class="fas fa-spinner fa-2x"></i>
-                            <br />
-                            <button id="ledBtn" class="btn btn-warning" disabled type="button" onclick="buttonclick(this);">Wait...</button>
+                        <i id="iconLed" class="fas fa-spinner fa-2x"></i>
+                        <br />
+                        <button id="ledBtn" class="btn btn-warning" disabled type="button" onclick="buttonclick(this);">Wait...</button>
                     </div>
                 </div>
                 <hr />
                 <canvas id="myChart" width="1000" height="250"></canvas>
+                <hr />
+                <table id="table" class="table table-striped">
+                    <thead class="thead-dark"></thead>
+                </table>
+                <nav aria-label="...">
+                    <ul id="paginationButtons" class="pagination">
+                        <!-- <li class="page-item disabled">
+                            <span class="page-link">Previous</span>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">1</a>
+                        </li>
+                        <li class="page-item active">
+                            <span class="page-link">
+                                2
+                                <span class="sr-only">(current)</span>
+                            </span>
+                        </li>
+                        <li class="page-item" onclick="fillTable(3);">
+                            <a class="page-link" href="#">3</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">Next</a>
+                        </li> -->
+                    </ul>
+                </nav>
             </div>
             <div class="tab-pane fade" id="nav-knockout" role="tabpanel" aria-labelledby="nav-knockout-tab">
                 <br />
@@ -147,9 +178,9 @@
                 </div>
             </div>
             <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-                    <br />
-                    <h3>jQuery sortable items between each columns with Socket.IO</h3>
-                    <hr />
+                <br />
+                <h3>jQuery sortable items between each columns with Socket.IO</h3>
+                <hr />
                 <div id='myLists' class="row">
                     <!-- <div class="col-md-4">
                         <h5>
@@ -190,12 +221,14 @@
                     </div> -->
                 </div>
             </div>
-          </div>        
+        </div>
     </div>
     <script src="js/knockout-3.4.2.js"></script>
     <script src="js/knockout.mapping-latest.js"></script>
     <script src="js/main.js"></script>
     <script src="js/socket.js"></script>
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script src="js/pagination.js"></script>
 </body>
+
 </html>

@@ -15,6 +15,24 @@ router.post('/measure', function(req, res){
     });
 });
 
+router.get('/measure/:page/:size', function(req, res){
+    Measure.paginationMeasure(req.params.page, req.params.size, function(err, measure){
+        if(err){
+            throw err;
+        }
+        res.json(measure);
+    })
+});
+
+router.get('/measure/:_id', function(req, res){
+    Measure.getMeasureById(req.params._id, function(err, measure){
+        if(err){
+            throw err;
+        }
+        res.json(measure);
+    });
+});
+
 ///////////////////////////////////////////////////////////
 
 router.get('/persons', function(req, res){

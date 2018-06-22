@@ -45,6 +45,7 @@ function fillTable(index) {
         dataType: 'JSON',
         success: function (data) {
             populateTable(data.docs);
+            addPaginationButtons(data);
         }
     })
 }
@@ -99,7 +100,7 @@ function setPreviousButton(index) {
 function setButtons(data, index) {
     if (data == index) {
         $('#paginationButtons').append(
-            $('<li>').attr('class', 'page-item active').append(
+            $('<li>').attr('id', 'currentItem').attr('class', 'page-item active').append(
                 $('<a>')
                     .attr('class', 'page-link')
                     .append(index)
@@ -134,11 +135,11 @@ function setNextButton(index) {
     }
 }
 function addPaginationButtons(data) {
-    console.log(data);
     var offset = data.page;
     var limit = data.limit;
     var total = data.total;
     var iterator = 1
+    //console.log(offset);
     setPreviousButton(offset);
     if (offset < 5) {
         iterator = 1;
@@ -153,15 +154,24 @@ function addPaginationButtons(data) {
     }
     setNextButton(data);
     $('#paginationButtons li.page-item a.page-link').on('click', function () {   
-        var btnIndex = $('#paginationButtons li').hasClass('active');
-        console.log(btnIndex);
-        $('#paginationButtons li').removeClass('active');
-        if ($(this).text() === 'Next' || $(this).text() === 'Previous') {
-            return;
-        } else {
-            $(this).parent('#paginationButtons li').addClass('active');
-            $('#table').empty();
-            fillTable($(this).text());
+       //ustawic next buttona 
+        if($(this).text() === 'Next'){
+            var currentIndex = $('#paginationButtons').find('.active').text();
+            console.log(currentIndex);
+            $('#paginationButtons li').removeClass('active'); 
+            var nextBtn = $("#paginationButtons li[name=2]");
+            console.log($(nextBtn).text());
         }
+        else{
+            if ($(this).text() === 'Next' || $(this).text() === 'Previous') {
+                return;
+            } else {
+                $('#paginationButtons li').removeClass('active'); 
+                $(this).parent('#paginationButtons li').addClass('active');
+                $('#table').empty();
+                $('#paginationButtons').empty();
+                fillTable($(this).text());
+            }
+        }       
     })
 }

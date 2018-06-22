@@ -68,19 +68,19 @@ module.exports.deleteMeasure = function(id, callback){
 }
 
 module.exports.paginationMeasure = function(page, size, callback){
-    // var query = {
-    //     page: parseInt(page),
-    //     limit: parseInt(size)
-    // }; 
-    // Measure.paginate({}, query, callback);    
-    var query   = {};
-    var options = {
-    //select:   'id',
-    sort:     { measureDate: -1 },
-    //populate: 'author',
-    lean:     true,
-    offset:   parseInt(page), 
-    limit:    parseInt(size)
-    };
-    Measure.paginate(query, options, callback);  
+    var query = {
+        page: parseInt(page),
+        limit: parseInt(size)
+    }; 
+    Measure.paginate({}, query, callback);    
+    // var query   = {};
+    // var options = {
+    // //select:   'id',
+    // sort:     { measureDate: -1 },
+    // //populate: 'author',
+    // lean:     true,
+    // offset:   parseInt(page), 
+    // limit:    parseInt(size)
+    // };
+    // Measure.paginate(query, options, callback);  
 }

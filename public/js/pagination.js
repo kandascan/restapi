@@ -1,4 +1,5 @@
-const APITEMPURL = 'http://localhost:3000/api/measure/';
+//const APITEMPURL = 'http://localhost:3000/api/measure/';
+const APITEMPURL = 'https://korest.herokuapp.com/api/measure/';
 var tableColumns = [{
     field: '_id',
     title: 'ID'
@@ -31,8 +32,7 @@ $.ajax({
     type: 'GET',
     dataType: 'JSON',
     success: function (data) {
-        console.log(data);
-        $('#table').bootstrapTable({ columns: tableColumns, data: data.docs });
+        populateTable(data.docs);
         addPaginationButtons(data);
     }
 })
@@ -44,10 +44,39 @@ function fillTable(index) {
         type: 'GET',
         dataType: 'JSON',
         success: function (data) {
-            console.log(data);
-            $('#table').bootstrapTable({ columns: tableColumns, data: data.docs });
+            populateTable(data.docs);
         }
     })
+}
+
+function populateTable(data) {
+    $('#table').append(
+        $('<thead>').attr('class', 'thead-dark').append(
+            $('<th>').append(tableColumns[0].title),
+            $('<th>').append(tableColumns[1].title),
+            $('<th>').append(tableColumns[2].title),
+            $('<th>').append(tableColumns[3].title),
+            $('<th>').append(tableColumns[4].title),
+            $('<th>').append(tableColumns[5].title),
+            $('<th>').append(tableColumns[6].title),
+            $('<th>').append(tableColumns[7].title)
+        ),
+        $('<tbody>')
+    );
+    $.each(data, function (index, value) {
+        $('#table tbody').append(
+            $('<tr>').append(
+                $('<td>').append(value._id),
+                $('<td>').append(value.humidity),
+                $('<td>').append(value.temperatureCelsius),
+                $('<td>').append(value.temperatureFahrenheit),
+                $('<td>').append(value.heatIndexCelsius),
+                $('<td>').append(value.heatIndexFahrenheit),
+                $('<td>').append(value.led),
+                $('<td>').append(value.measureDate)
+            ))
+    }
+    );
 }
 
 function setPreviousButton(index) {
@@ -56,7 +85,6 @@ function setPreviousButton(index) {
             $('<li>').attr('class', 'page-item disabled').append(
                 $('<a>')
                     .attr('class', 'page-link')
-                    .attr('tabindex', '-1')
                     .append('Previous')
             ));
     } else {
@@ -64,7 +92,6 @@ function setPreviousButton(index) {
             $('<li>').attr('class', 'page-item').append(
                 $('<a>')
                     .attr('class', 'page-link')
-                    .attr('tabindex', '-1')
                     .append('Previous')
             ));
     }
@@ -75,7 +102,6 @@ function setButtons(data, index) {
             $('<li>').attr('class', 'page-item active').append(
                 $('<a>')
                     .attr('class', 'page-link')
-                    .attr('tabindex', '1')
                     .append(index)
             ));
     }
@@ -83,11 +109,9 @@ function setButtons(data, index) {
         $('#paginationButtons').append(
             $('<li>')
                 .attr('class', 'page-item')
-                .attr('onclick', fillTable(index))
                 .append(
                     $('<a>')
                         .attr('class', 'page-link')
-                        .attr('tabindex', '1')
                         .append(index)
                 ));
     }
@@ -98,7 +122,6 @@ function setNextButton(index) {
             $('<li>').attr('class', 'page-item disabled').append(
                 $('<a>')
                     .attr('class', 'page-link')
-                    .attr('tabindex', '-1')
                     .append('Next')
             ));
     } else {
@@ -106,13 +129,13 @@ function setNextButton(index) {
             $('<li>').attr('class', 'page-item').append(
                 $('<a>')
                     .attr('class', 'page-link')
-                    .attr('tabindex', '-1')
                     .append('Next')
             ));
     }
 }
 function addPaginationButtons(data) {
-    var offset = data.offset;
+    console.log(data);
+    var offset = data.page;
     var limit = data.limit;
     var total = data.total;
     var iterator = 1
@@ -129,4 +152,16 @@ function addPaginationButtons(data) {
         setButtons(offset, i);
     }
     setNextButton(data);
+    $('#paginationButtons li.page-item a.page-link').on('click', function () {   
+        var btnIndex = $('#paginationButtons li').hasClass('active');
+        console.log(btnIndex);
+        $('#paginationButtons li').removeClass('active');
+        if ($(this).text() === 'Next' || $(this).text() === 'Previous') {
+            return;
+        } else {
+            $(this).parent('#paginationButtons li').addClass('active');
+            $('#table').empty();
+            fillTable($(this).text());
+        }
+    })
 }

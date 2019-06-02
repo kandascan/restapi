@@ -2,6 +2,7 @@ const HOST_URL = 'https://korest.herokuapp.com/';
 //const HOST_URL = 'http://localhost:3000';
 const API_URL_MEASURE = 'https://korest.herokuapp.com/api/measure/';
 var socket = io.connect(HOST_URL);
+var needle = $("#needle");
 
 var arrayList = [
     {
@@ -291,4 +292,8 @@ socket.on('tempSensorUI', data => {
     var datetime = currentdate.toString().substr(16, 8);
     updateChart(datetime, data.Temperature.substr(0, 5), data.Humidity.substr(0, 5), data["Heat index"].substr(9, 5));
     removeData();
+    var humidityRotationAngle = (data.Humidity.substr(0, 2)-15)*2;//-15 * 2 correction data to display properly on meter face
+
+    TweenLite.to(needle, 2, {rotation:humidityRotationAngle,  transformOrigin:"bottom right"});    
+    $('#numbers').html(data.Humidity.substr(0, 5)+'%');
 });

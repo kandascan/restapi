@@ -1,12 +1,214 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <link href="https://use.fontawesome.com/releases/v5.0.7/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+        crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css" />
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.js"></script>
     <title>REST API</title>
 </head>
+
 <body>
-    <h2>Hello from public folder for any frontend framework</h2>
+    <div id="person" class="container">
+        <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <a class="nav-item nav-link active" id="nav-sensors-tab" data-toggle="tab" href="#nav-sensors" role="tab" aria-controls="nav-sensors"
+                    aria-selected="true">Sensors</a>
+                <a class="nav-item nav-link" id="nav-knockout-tab" data-toggle="tab" href="#nav-knockout" role="tab" aria-controls="nav-knockout"
+                    aria-selected="false">KnockOut</a>
+                <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact"
+                    aria-selected="false">$(Sortable)</a>
+            </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-sensors" role="tabpanel" aria-labelledby="nav-sensors-tab">
+                <div class="row">
+                    <div class="col-md-6">
+                        <br />
+                        <h4>Socket.io listening ESP8266 and read data from DHT22 sensor.</h4>
+                    </div>
+                    <div class="col-md-4">
+                        <br />
+                        <h6>Humidity:
+                            <small id="currentHumid">Loading...</small>
+                        </h6>
+                        <h6>Temperature:
+                            <small id="currentTemp">Loading...</small>
+                        </h6>
+                        <h6>Heat Index:
+                            <small id="currentheatIndex">Loading...</small>
+                        </h6>
+                    </div>
+                    <div class="col-md-2">
+                        <br />
+                        <h6>Turn on/off LED</h6>
+                        <i id="iconLed" class="fas fa-spinner fa-2x"></i>
+                        <br />
+                        <button id="ledBtn" class="btn btn-warning" disabled type="button" onclick="buttonclick(this);">Wait...</button>
+                    </div>
+                </div>
+                <hr />
+                <canvas id="myChart" width="1000" height="250"></canvas>
+                <hr />
+                <table id="table" class="table table-striped"></table>
+                <nav aria-label="...">
+                    <ul id="paginationButtons" class="pagination">
+                    </ul>
+                </nav>
+            </div>
+            <div class="tab-pane fade" id="nav-knockout" role="tabpanel" aria-labelledby="nav-knockout-tab">
+                <br />
+                <h3>Knockout framework on the frontend site</h3>
+                <hr />
+                <h2>Persons on the Grid
+                    <span data-bind="text: persons().length" class="badge badge-secondary"></span>
+                </h2>
+                <div id="validator" data-bind="foreach: validates">
+                    <div class="alert alert-warning" data-bind="text: $data">
+                    </div>
+                </div>
+                <div>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>First name</th>
+                                <th>Last name</th>
+                                <th>Age</th>
+                                <th>City</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="input-group error">
+                                        <input id="txtFirstName" type="text" class="form-control" placeholder="First name" onkeyup="hideValidator()">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group">
+                                        <input id="txtLastName" type="text" class="form-control" placeholder="Last name" onkeyup="hideValidator()">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group">
+                                        <input id="txtAge" type="text" class="form-control" placeholder="Age" onkeyup="hideValidator()">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group">
+                                        <input id="txtCity" type="text" class="form-control" placeholder="City" onkeyup="hideValidator()">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-primary" data-bind="event: { click: addPerson }">
+                                                <i class="fas fa-user-plus"></i> Add Person
+                                            </button>
+                                        </span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tbody data-bind="foreach: persons">
+                            <tr>
+                                <td data-bind="text: firstName"></td>
+                                <td data-bind="text: lastName"></td>
+                                <td data-bind="text: age"></td>
+                                <td data-bind="text: city"></td>
+                                <td>
+                                    <div class="btn-group" role="group" aria-label="...">
+                                        <button id="btnPlus" class="btn btn-success" data-bind="click: $parent.increesAge">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                        <button id="btnMinus" class="btn btn-warning" data-bind="click: $parent.decreesAge">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                        <button id="btnTrash" class="btn btn-danger" data-bind="click: $parent.removePerson">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+                <br />
+                <h3>jQuery sortable items between each columns with Socket.IO</h3>
+                <hr />
+                <div id='myLists' class="row">
+                    <!-- <div class="col-md-4">
+                        <h5>
+                            <span data-bind="text: todoHeader" class="badge badge-primary"></span>
+                        </h5>
+        
+                        <ul id="todo" class="connectedSortable sortable">
+                            <li class="ui-state-default">Item 1</li>
+                            <li class="ui-state-default">Item 2</li>
+                            <li class="ui-state-default">Item 3</li>
+                            <li class="ui-state-default">Item 4</li>
+                            <li class="ui-state-default">Item 5</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <h5>
+                            <span data-bind="text: inProgressHeader" class="badge badge-secondary"></span>
+                        </h5>
+                        <ul id="inProgress" class="connectedSortable sortable">
+                            <li class="ui-state-highlight">Item 6</li>
+                            <li class="ui-state-highlight">Item 7</li>
+                            <li class="ui-state-highlight">Item 8</li>
+                            <li class="ui-state-highlight">Item 9</li>
+                            <li class="ui-state-highlight">Item 10</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <h5>
+                            <span data-bind="text: completedHeader" class="badge badge-success"></span>
+                        </h5>
+                        <ul id="completed" class="connectedSortable sortable">
+                            <li class="ui-state-highlight">Item 11</li>
+                            <li class="ui-state-highlight">Item 12</li>
+                            <li class="ui-state-default">Item 13</li>
+                            <li class="ui-state-default">Item 14</li>
+                            <li class="ui-state-default">Item 15</li>
+                        </ul>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/knockout-3.4.2.js"></script>
+    <script src="js/knockout.mapping-latest.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/socket.js"></script>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script src="js/pagination.js"></script>
 </body>
+
 </html>

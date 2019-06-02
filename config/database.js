@@ -1,4 +1,5 @@
 require('dotenv/config')
 module.exports = {
-    database: 'mongodb://' + process.env.DB_USER + ':' + process.env.DB_PASS + '@ds251827.mlab.com:51827/' + process.env.DB_NAME
+    database: process.env.CONNECTION_STRING  
+   // database: 'mongodb://test:test@ds153400.mlab.com:53400/testowa' 
 }

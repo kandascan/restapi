@@ -5,8 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npm run build",
-    "build": "webpack -d && webpack-dev-server --content-base public/ --inline --hot --port 1234"
+    "start": "npm run build"
   },
   "author": "",
   "license": "ISC",

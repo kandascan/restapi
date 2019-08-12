@@ -248,10 +248,13 @@ function buttonclick(e) {
 }
 
 socket.on('video_recieve', data => {
-    console.log(data);
-    var rotationAngle = (data.substr(5)-15)*2;
+    //console.log(data);
+    var rotationAngle = (data.iterator-15)*2;
     TweenLite.to(needle, 2, {rotation:rotationAngle,  transformOrigin:"bottom right"});    
-    $('#numbers').html(data.substr(5));
+    $('#numbers').html(data.iterator);
+
+    const image = document.getElementById('video');
+    image.src = data.image;
 });
 
 socket.on('led', data => {

@@ -246,6 +246,10 @@ function buttonclick(e) {
     socket.emit('tempSensorServer', data);
 }
 
+socket.on('video_recieve', data => {
+    console.log(data);
+});
+
 socket.on('led', data => {
     SetButtonAndIcon(data.Ledii);
 })

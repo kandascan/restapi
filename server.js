@@ -43,6 +43,10 @@ io.on('connection', socket => {
         io.sockets.emit('test', data);
     });
 
+    socket.on('video_send', data => {
+        io.sockets.emit('video_recieve', data);
+    });
+
     socket.on('chat message', data => {
         console.log('Socket on chat message on server :')
         console.log(data);

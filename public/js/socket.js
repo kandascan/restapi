@@ -249,6 +249,9 @@ function buttonclick(e) {
 
 socket.on('video_recieve', data => {
     console.log(data);
+    var rotationAngle = (data.substr(5)-15)*2;
+    TweenLite.to(needle, 2, {rotation:rotationAngle,  transformOrigin:"bottom right"});    
+    $('#numbers').html(data.substr(5));
 });
 
 socket.on('led', data => {
@@ -296,8 +299,5 @@ socket.on('tempSensorUI', data => {
     var datetime = currentdate.toString().substr(16, 8);
     updateChart(datetime, data.Temperature.substr(0, 5), data.Humidity.substr(0, 5), data["Heat index"].substr(9, 5));
     removeData();
-    var humidityRotationAngle = (data.Humidity.substr(0, 2)-15)*2;//-15 * 2 correction data to display properly on meter face
 
-    TweenLite.to(needle, 2, {rotation:humidityRotationAngle,  transformOrigin:"bottom right"});    
-    $('#numbers').html(data.Humidity.substr(0, 5)+'%');
 });

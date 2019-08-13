@@ -258,7 +258,7 @@ function StreamVideo(data){
     var webcam = document.getElementById("webcam");
     webcam.insertBefore(img, webcam.firstChild);
 
-    while (2 < finished.length) {
+    while (1 < finished.length) {
         var del = finished.shift(); // Delete old image(s) from document
         del.parentNode.removeChild(del);
     }

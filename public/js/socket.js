@@ -246,15 +246,34 @@ function buttonclick(e) {
     };
     socket.emit('tempSensorServer', data);
 }
+var finished = new Array();
+function StreamVideo(data){
+    // const image = document.getElementById('video');
+    // image.src = data.image;
+
+    var img = new Image();
+    img.style.position = "absolute";
+    img.style.zIndex = data.iterator;
+    img.src = data.image;
+    var webcam = document.getElementById("webcam");
+    webcam.insertBefore(img, webcam.firstChild);
+
+    while (2 < finished.length) {
+        var del = finished.shift(); // Delete old image(s) from document
+        del.parentNode.removeChild(del);
+    }
+    finished.push(img);
+}
+
+function DisplayKM(iterator){
+    var rotationAngle = (iterator-15)*2;
+    TweenLite.to(needle, 2, {rotation:rotationAngle,  transformOrigin:"bottom right"});    
+    $('#numbers').html(iterator);
+}
 
 socket.on('video_recieve', data => {
-    //console.log(data);
-    var rotationAngle = (data.iterator-15)*2;
-    TweenLite.to(needle, 2, {rotation:rotationAngle,  transformOrigin:"bottom right"});    
-    $('#numbers').html(data.iterator);
-
-    const image = document.getElementById('video');
-    image.src = data.image;
+    DisplayKM(data.iterator);
+    StreamVideo(data);   
 });
 
 socket.on('led', data => {
